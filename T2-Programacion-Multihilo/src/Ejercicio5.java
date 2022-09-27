@@ -21,6 +21,9 @@ class Caballo implements Runnable {
     }
     public void run() {
         for (int i = 0; i < 100; i++) {
+            Random r = new Random();
+            int numero = r.nextInt(10);
+            i += numero;
                if (i == 99) {
                    System.out.println("El caballo " + this.posicion +" ha llegado a la meta");
                }

@@ -1,3 +1,5 @@
+package ProgramacionHilo;
+
 public class Ejercicio6 {
     public static void main(String args[]) {
         int numero = 0;

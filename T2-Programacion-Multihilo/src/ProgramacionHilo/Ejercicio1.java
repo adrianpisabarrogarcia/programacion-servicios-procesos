@@ -1,8 +1,10 @@
+package ProgramacionHilo;
+
 import java.util.Scanner;
 
 public class Ejercicio1 {
     public static void main(String args[]) {
-        System.out.println("Creamos el objeto de la clase Multi");
+        System.out.println("Creamos el objeto de la clase ProgramacionHilo.Multi");
         Multi m1 = new Multi();
 
         System.out.println("Creamos hilo 1");

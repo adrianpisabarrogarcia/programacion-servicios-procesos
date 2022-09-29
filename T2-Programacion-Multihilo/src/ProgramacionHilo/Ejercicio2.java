@@ -1,10 +1,10 @@
-import java.util.Scanner;
+package ProgramacionHilo;
 
 public class Ejercicio2 {
     public static void main(String args[]) {
-        System.out.println("Creamos el objeto de MiltiPares");
+        System.out.println("Creamos el objeto de ProgramacionHilo.MiltiPares");
         MiltiPares mPar = new MiltiPares();
-        System.out.println("Creamos el objeto de MiltiImpares");
+        System.out.println("Creamos el objeto de ProgramacionHilo.MiltiImpares");
         MiltiImpares mImpar = new MiltiImpares();
 
 

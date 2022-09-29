@@ -1,6 +1,8 @@
+package ProgramacionHilo;
+
 public class Ejercicio3 {
     public static void main(String args[]) {
-        System.out.println("Creamos el objeto de MultiHelloWorld");
+        System.out.println("Creamos el objeto de ProgramacionHilo.MultiHelloWorld");
         MultiHelloWorld mHelloWorld = new MultiHelloWorld();
 
         System.out.println("Creamos hilo 1");

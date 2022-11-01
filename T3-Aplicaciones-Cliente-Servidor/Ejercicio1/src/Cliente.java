@@ -4,30 +4,27 @@ import java.net.Socket;
 public class Cliente {
 
     public static void main(String[] args) {
+
+        final String HOST = "localhost";
+        final int PUERTO = 4999;
+
         try {
-            for (int i = 0; i < 5; i++) {
-                Socket peticion = new Socket("localhost", 4999);
+             for (int i = 0; i < 5; i++) {
+                //Creamos el socket para conectarnos al servidor
+                Socket peticion = new Socket(HOST, PUERTO);
 
-                DataOutputStream dos = new DataOutputStream(peticion.getOutputStream());
-                DataInputStream dis = new DataInputStream(peticion.getInputStream());
+                //Creamos el flujo de entrada para leer la respuesta del servidor
+                InputStream aux = peticion.getInputStream();
+                DataInputStream flujo = new DataInputStream(aux);
 
-                //Enviamos un valor
-                int valor = i;
-                //int to byte
-                byte b = (byte) valor;
-                dos.write(b);
-                dos.flush();
-                System.out.println("Valor enviado");
-
-                //esperamos la respuesta
-                String respuesta = dis.readUTF();
+                //Esperamos la respuesta
+                String respuesta = flujo.readUTF();
                 System.out.println("Respuesta recibida: " + respuesta);
 
-                //Cerramos la conexion
-                dos.close();
-                dis.close();
+                //Cerramos las conexiones
+                aux.close();
+                flujo.close();
                 peticion.close();
-
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

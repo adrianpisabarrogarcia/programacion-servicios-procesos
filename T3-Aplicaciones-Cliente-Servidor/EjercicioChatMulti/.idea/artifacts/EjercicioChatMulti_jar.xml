@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EjercicioChatMulti:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EjercicioChatMulti_jar</output-path>
+    <root id="archive" name="EjercicioChatMulti.jar">
+      <element id="module-output" name="EjercicioChatMulti" />
+    </root>
+  </artifact>
+</component>

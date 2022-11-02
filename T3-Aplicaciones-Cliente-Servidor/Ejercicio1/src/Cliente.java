@@ -13,7 +13,6 @@ public class Cliente {
                 //Creamos el socket para conectarnos al servidor
                 Socket peticion = new Socket(HOST, PUERTO);
 
-                //Creamos el flujo de entrada para leer la respuesta del servidor
                 InputStream aux = peticion.getInputStream();
                 DataInputStream flujo = new DataInputStream(aux);
 

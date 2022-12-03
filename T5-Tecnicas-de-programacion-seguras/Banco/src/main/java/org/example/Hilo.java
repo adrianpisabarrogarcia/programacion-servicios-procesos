@@ -72,7 +72,11 @@ public class Hilo extends Thread {
     }
 
     private void pantallaLogin(ObjectOutputStream output, ObjectInputStream input) {
-        System.out.println("Pantalla de login");
+
+
+
+
+
     }
 
     private void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {

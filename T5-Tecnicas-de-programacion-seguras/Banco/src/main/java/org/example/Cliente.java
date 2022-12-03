@@ -1,6 +1,7 @@
 package org.example;
 
 import org.apache.log4j.Logger;
+import org.example.models.Usuario;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -78,7 +79,13 @@ public class Cliente {
     }
 
     private static void pantallaAcceso(ObjectOutputStream output, ObjectInputStream input) {
-        System.out.println("Introduzca su nombre de usuario");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduzca tu correo electronico: ");
+        String email = scanner.nextLine();
+        System.out.println("Introduzca tu contraseña: ");
+        String password = scanner.nextLine();
+        Usuario usuario = new Usuario();
+
     }
 
     private static void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {

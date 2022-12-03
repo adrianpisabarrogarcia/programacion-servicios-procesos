@@ -8,6 +8,15 @@ public class CuentaBancaria {
     private String numeroCuenta;
     private ArrayList<Transaccion> transacciones;
 
+    public CuentaBancaria(int id, String numeroCuenta, ArrayList<Transaccion> transacciones) {
+        this.id = id;
+        this.numeroCuenta = numeroCuenta;
+        this.transacciones = transacciones;
+    }
+
+    public CuentaBancaria() {
+    }
+
     public int getId() {
         return id;
     }

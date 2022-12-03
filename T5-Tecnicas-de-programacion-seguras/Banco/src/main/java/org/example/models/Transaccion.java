@@ -7,6 +7,15 @@ public class Transaccion {
     private String descripcion;
     private double importe;
 
+    public Transaccion(int id, String fecha, String descripcion, double importe) {
+        this.id = id;
+        this.fecha = fecha;
+        this.descripcion = descripcion;
+        this.importe = importe;
+    }
+
+    public Transaccion() {
+    }
 
     public int getId() {
         return id;

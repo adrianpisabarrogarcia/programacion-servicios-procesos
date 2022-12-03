@@ -12,6 +12,22 @@ public class Usuario {
     private boolean documentoFirmado;
     private CuentaBancaria cuentaBancaria;
 
+    public Usuario(int id, String nombre, String apellido, int edad, String email, String password, String credentialsPath, boolean documentoFirmado, CuentaBancaria cuentaBancaria) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.email = email;
+        this.password = password;
+        this.credentialsPath = credentialsPath;
+        this.documentoFirmado = documentoFirmado;
+        this.cuentaBancaria = cuentaBancaria;
+    }
+
+    public Usuario() {
+    }
+
+
     public int getId() {
         return id;
     }

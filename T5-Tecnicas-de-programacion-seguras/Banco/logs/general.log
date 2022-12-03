@@ -1,5 +1,3 @@
-2022-12-03 11:19:09,524 INFO  [main] Main:12 - Hello world!
-2022-12-03 11:19:09,526 DEBUG [main] Main:13 - Hello world!
-2022-12-03 11:19:09,526 ERROR [main] Main:14 - Hello world!
-2022-12-03 11:19:09,526 WARN  [main] Main:15 - Hello world!
-2022-12-03 11:19:09,526 FATAL [main] Main:16 - Hello world!
+2022-12-03 12:10:22,399 INFO  [main] Cliente:24 - Conectado al servidor
+2-12-03 12:10:22,399 INFO  [main] Servidor:40 - Cliente conectado
+2022-12-03 12:10:22,400 INFO  [Thread-0] Hilo:18 - Hola

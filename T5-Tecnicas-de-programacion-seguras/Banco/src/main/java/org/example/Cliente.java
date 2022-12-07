@@ -8,6 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.io.*;
+import java.net.*;
+import java.math.*;
+import java.security.*;
+import java.security.spec.*;
+import javax.crypto.*;
+import javax.crypto.spec.*;
 
 public class Cliente {
 
@@ -16,6 +23,12 @@ public class Cliente {
     public static final int PUERTO = 50001;
     public static final String HOST = "localhost";
 
+    //Clave publica del servidor
+    static PublicKey publicKeyServidor = null;
+    //Clave simetrica del cliente
+    static SecretKey secretKeyCliente;
+
+    //Método para generar las claves del cliente y el cifrador
     public static void main(String[] args) {
 
         Socket socket = null;
@@ -26,6 +39,20 @@ public class Cliente {
             throw new RuntimeException(e);
         }
         logger.info("Conectado al servidor");
+
+
+        //Crear una clave simétrica AES
+        KeyGenerator generadorAES = null;
+        SecretKey claveSimetrica = null;
+        try {
+            generadorAES = KeyGenerator.getInstance("AES");
+            generadorAES.init(128);
+            claveSimetrica = generadorAES.generateKey();
+            logger.info("Generada la clave simétrica AES");
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Error al generar la clave simétrica AES" + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
         //Crear flujos de entrada y de salida
         ObjectOutputStream output = null;
@@ -38,11 +65,140 @@ public class Cliente {
             throw new RuntimeException(e);
         }
 
-        pantallaPrincipal(output, input);
+        //Recibir la clave publica del servidor
+        try {
+            publicKeyServidor = (PublicKey) input.readObject();
+            logger.info("Recibida la clave publica del servidor");
+        } catch (Exception e) {
+            logger.error("Error al recibir la clave publica del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
+        //Encriptar la clave simétrica con la clave publica del servidor
+        Cipher cipherCliente = null;
+        byte[] claveSimetricaEncriptada = null;
+        try {
+            cipherCliente = Cipher.getInstance("RSA");
+            cipherCliente.init(Cipher.ENCRYPT_MODE, publicKeyServidor);
+            claveSimetricaEncriptada = cipherCliente.doFinal(claveSimetrica.getEncoded());
+            logger.info("Encriptada la clave simétrica con la clave publica del servidor");
+        } catch (Exception e) {
+            logger.error("Error al encriptar la clave simétrica con la clave publica del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Guardar la clave en la variable global
+        secretKeyCliente = claveSimetrica;
+        //Guardar la clave publica del servidor en la variable global
+        publicKeyServidor = publicKeyServidor;
+
+
+        //Enviar la clave simétrica encriptada al servidor
+        try {
+            output.writeObject(claveSimetricaEncriptada);
+            logger.info("Enviada la clave simétrica encriptada al servidor");
+        } catch (Exception e) {
+            logger.error("Error al enviar la clave simétrica encriptada al servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+
+        //Pruebas de envio y recepcion
+        pruebasEnvioRecepcion(output, input);
+
+        //pantallaRegistro(output, input);
+
+    }
+
+    private static void pruebasEnvioRecepcion(ObjectOutputStream output, ObjectInputStream input) {
+        //Enviar un mensaje al servidor
+        String mensaje = "Hola servidor";
+        //Cifrar el mensaje
+        byte[] mensajeCifrado = cifrarSimetrico(mensaje);
+        //Enviar el mensaje cifrado
+        try {
+            output.writeObject(mensajeCifrado);
+            logger.info("Enviado el mensaje cifrado al servidor");
+        } catch (Exception e) {
+            logger.error("Error al enviar el mensaje cifrado al servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //Esperar la respuesta del servidor
+        byte[] mensajeRecibido = null;
+        try {
+            mensajeRecibido = (byte[]) input.readObject();
+            logger.info("Recibido el mensaje cifrado del servidor");
+        } catch (Exception e) {
+            logger.error("Error al recibir el mensaje cifrado del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //Descifrar el mensaje
+        String mensajeDescifrado = descifrarSimetrico(mensajeRecibido);
+        //Mostrar el mensaje
+        logger.info("Mensaje recibido del servidor: " + mensajeDescifrado);
+
+    }
+
+    /**
+     * Cifra un texto con la clave simétrica
+     *
+     * @param contenido
+     * @return byte[]
+     */
+    private static byte[] cifrarSimetrico(String contenido) {
+        //Crear el cifrador simétrico con la clave simétrica
+        Cipher cifradorSimetrico = null;
+        try {
+            cifradorSimetrico = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cifradorSimetrico.init(Cipher.ENCRYPT_MODE, secretKeyCliente);
+            logger.info("Creado el cifrador simétrico");
+        } catch (Exception e) {
+            logger.error("Error al crear el cifrador simétrico" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //Cifrar el contenido
+        byte[] contenidoCifrado = null;
+        try {
+            contenidoCifrado = cifradorSimetrico.doFinal(contenido.getBytes());
+            logger.info("Cifrado el contenido");
+        } catch (Exception e) {
+            logger.error("Error al cifrar el contenido" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return contenidoCifrado;
+    }
+
+    /**
+     * Descifra un texto con la clave simétrica
+     *
+     * @param contenidoCifrado
+     * @return
+     */
+    private static String descifrarSimetrico(byte[] contenidoCifrado) {
+        //Crear el cifrador simétrico con la clave simétrica
+        Cipher cifradorSimetrico = null;
+        try {
+            cifradorSimetrico = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cifradorSimetrico.init(Cipher.DECRYPT_MODE, secretKeyCliente);
+            logger.info("Creado el cifrador simétrico");
+        } catch (Exception e) {
+            logger.error("Error al crear el cifrador simétrico" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //Descifrar el contenido
+        byte[] contenidoDescifrado = null;
+        try {
+            contenidoDescifrado = cifradorSimetrico.doFinal(contenidoCifrado);
+            logger.info("Descifrado el contenido");
+        } catch (Exception e) {
+            logger.error("Error al descifrar el contenido" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return new String(contenidoDescifrado);
 
 
     }
+
 
     private static void pantallaPrincipal(ObjectOutputStream output, ObjectInputStream input) {
         //Esperar a el mensaje del servidor
@@ -86,9 +242,98 @@ public class Cliente {
         String password = scanner.nextLine();
         Usuario usuario = new Usuario();
 
+        //Password a byte[]
+        byte[] passwordBytes = password.getBytes();
+
+        usuario.setEmail(email);
+        usuario.setPassword(passwordBytes);
+
+        try {
+            output.writeObject(usuario);
+        } catch (IOException e) {
+            logger.error("Error al enviar el usuario al servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {
-        System.out.println("Ingrese el nombre de usuario");
+        Scanner scanner = new Scanner(System.in);
+        Usuario usuario = new Usuario();
+
+        //Nombre de usuario
+        boolean nombreValido = false;
+        do {
+            System.out.println("Ingrese el nombre de usuario: ");
+            String nombre = scanner.nextLine();
+            if (usuario.validarNombre(nombre)) {
+                //Cifrar el nombre con la clave simétrica
+                byte[] nombreCifrado = cifrarSimetrico(nombre);
+
+
+                usuario.setNombre(nombre);
+                nombreValido = true;
+            }
+        } while (!nombreValido);
+
+        //Apellido de usuario
+        boolean apellidoValido = false;
+        do {
+            System.out.println("Ingrese el apellido de usuario: ");
+            String apellido = scanner.nextLine();
+            if (usuario.validarApellido(apellido)) {
+                usuario.setApellido(apellido);
+                apellidoValido = true;
+            }
+        } while (!apellidoValido);
+
+        //Edad de usuario
+        boolean edadValida = false;
+        do {
+            System.out.println("Ingrese la edad de usuario: ");
+            String edad = scanner.nextLine();
+            if (usuario.validarEdad(edad)) {
+                usuario.setEdad(Integer.parseInt(edad));
+                edadValida = true;
+            }
+        } while (!edadValida);
+
+        //Email de usuario
+        boolean emailValido = false;
+        do {
+            System.out.println("Ingrese el email de usuario: ");
+            String email = scanner.nextLine();
+            if (usuario.validarEmail(email)) {
+                usuario.setEmail(email);
+                emailValido = true;
+            }
+        } while (!emailValido);
+
+        //Password de usuario
+        boolean passwordValido = false;
+        do {
+            System.out.println("Ingrese el password de usuario. La " +
+                    "contraseña debe de tener una minúscula, una mayúscula, un caracter no alfanumérico, " +
+                    "un caracter alfanumérico y mínimo 8 caracteres: ");
+            String password = scanner.nextLine();
+            if (usuario.validarPassword(password)) {
+                //Hashear la contraseña
+                byte[] passwordBytes = password.getBytes();
+                byte[] passwordHash = null;
+                try {
+                    passwordHash = HashManagerSHA256.getDigest(passwordBytes);
+                    logger.info("Hasheada la contraseña");
+                } catch (NoSuchAlgorithmException e) {
+                    logger.error("Error al hashear la contraseña" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+                usuario.setPassword(passwordHash);
+                passwordValido = true;
+            }
+        } while (!passwordValido);
+
+        //Imprimir usuario
+        System.out.println("Usuario a enviar: " + usuario.toString());
     }
 }
+

@@ -1,18 +1,20 @@
 package org.example.models;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     private int id;
     private String nombre;
     private String apellido;
     private int edad;
     private String email;
-    private String password;
+    private byte[] password;
     private String credentialsPath;
     private boolean documentoFirmado;
     private CuentaBancaria cuentaBancaria;
 
-    public Usuario(int id, String nombre, String apellido, int edad, String email, String password, String credentialsPath, boolean documentoFirmado, CuentaBancaria cuentaBancaria) {
+    public Usuario(int id, String nombre, String apellido, int edad, String email, byte[] password, String credentialsPath, boolean documentoFirmado, CuentaBancaria cuentaBancaria) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -68,11 +70,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
@@ -114,5 +116,43 @@ public class Usuario {
                 ", documentoFirmado=" + documentoFirmado +
                 ", cuentaBancaria=" + cuentaBancaria +
                 '}';
+    }
+
+    //Validaciones del usuario
+    public boolean validarNombre(String nombre) {
+        if (nombre.length() > 0 && nombre.length() < 20) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validarApellido(String apellido) {
+        if (apellido.length() > 0 && apellido.length() < 20) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validarEdad(String edad) {
+        //Validar que la edad sea un numero y que sea mayor a 18
+        try {
+            return Integer.parseInt(edad) > 18;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean validarEmail(String email) {
+        //Validar con regex
+        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+    }
+
+    public boolean validarPassword(String password) {
+        //Validar con regex la contraseña
+        //Debe tener al menos una letra mayuscula, una minuscula, un numero y un caracter especial
+        //mínimo 8 caracteres
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,}$");
     }
 }

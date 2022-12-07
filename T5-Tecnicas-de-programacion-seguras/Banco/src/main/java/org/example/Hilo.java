@@ -9,6 +9,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
 import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.crypto.*;
@@ -320,6 +321,51 @@ public class Hilo extends Thread {
         byte[] passwordCifrada = Base64.getDecoder().decode(password);
         usuario.setPassword(passwordCifrada);
 
+        //Recibir confirmación de la firma
+        String confirmacion = "";
+        try {
+            confirmacion = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer la confirmacion de la firma del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        System.out.println("Confirmacion de la firma: " + confirmacion);
+
+        //Ahora vamos a firmar el documento
+        Signature firmaDigital = null;
+        byte[] firmaBytes = null;
+        try {
+            firmaDigital = Signature.getInstance("SHA256withRSA");
+            //From calveSimetrica to PrivateKey
+            PrivateKey clavePrivada = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(claveSimetrica));
+            firmaDigital.initSign(clavePrivada);
+            firmaDigital.update(usuario.toString().getBytes());
+            firmaBytes = firmaDigital.sign();
+        } catch (Exception e) {
+            logger.error("Error al firmar el documento" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Enviar la firma al cliente
+        try {
+            enviarMensaje(output, Base64.getEncoder().encodeToString(firmaBytes));
+        } catch (Exception e) {
+            logger.error("Error al enviar la firma al cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+
+        //Comprobar en el lado del servidor que el usuario se ha registrado correctamente
+        String validacion = usuario.validarUsuarioServer();
+        //Enviar la validacion al cliente
+        try {
+            enviarMensaje(output, validacion);
+        } catch (Exception e) {
+            logger.error("Error al enviar la validacion al cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+
         //Guardar el usuario en el arraylist
         Servidor.usuarios.add(usuario);
 
@@ -339,7 +385,6 @@ public class Hilo extends Thread {
     }
 
     private void pantallaLogin(ObjectOutputStream output, ObjectInputStream input) {
-
         //Recibir el email del cliente
         String email = "";
         try {

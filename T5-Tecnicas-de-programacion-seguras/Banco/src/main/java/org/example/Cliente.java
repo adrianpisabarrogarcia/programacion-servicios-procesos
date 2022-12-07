@@ -332,7 +332,62 @@ public class Cliente {
             }
         } while (!passwordValido);
 
-        //Esperar a el mensaje del servidor para saber si se ha registrado correctamente
+        //Firmar un documento electrónicamente
+        boolean documentoValido = false;
+        do{
+            System.out.println("Vamos a firmar un documento de la aceptacion de politicas del banco Online:");
+            System.out.println("Firme digitalmente el mensaje para confirmar su registro");
+            System.out.println("Para firmar el documento, escriba 'firmar' y presione enter");
+            String opcion = scanner.nextLine();
+            if (opcion.equals("firmar")) {
+                enviarMensajeCifrado(output, opcion);
+                documentoValido = true;
+            }else {
+                System.out.println("Opcion no valida, es necesario firmar el documento para registrarse.");
+            }
+        }while (!documentoValido);
+
+        //recibir la firma del servidor
+        byte[] firma = null;
+        try {
+            String firmaRecibida = recibirMensajeCifrado(input);
+            firma = Base64.getDecoder().decode(firmaRecibida);
+            logger.info("Recibida la firma del servidor");
+        } catch (Exception e) {
+            logger.error("Error al recibir la firma del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Comprobar la firma
+        Signature firmaFirmada = null;
+        try {
+            firmaFirmada = Signature.getInstance("SHA1WITHRSA");
+            firmaFirmada.initVerify(publicKeyServidor);
+            firmaFirmada.update("firma".getBytes());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        boolean verificacion = false;
+        try {
+            verificacion = firmaFirmada.verify(firma);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Verificacion de la firma: " + verificacion);
+
+        if(verificacion){
+            System.out.println("La firma es correcta");
+        } else {
+            System.out.println("La firma es incorrecta");
+        }
+
+
+
+
+
+
+
+        //Esperar a el mensaje del servidor para saber si la validacion en el servidor fue correcta
         String mensajeRegistro = null;
         try {
             mensajeRegistro = recibirMensajeCifrado(input);
@@ -340,8 +395,14 @@ public class Cliente {
             logger.error("Error al leer el mensaje del servidor" + e.getMessage());
             throw new RuntimeException(e);
         }
-        System.out.println(mensajeRegistro);
-        pantallaPrincipal(output, input);
+        if (!mensajeRegistro.equals("")){
+            System.out.println(mensajeRegistro);
+            System.out.println("Inténtelo de nuevo");
+            pantallaPrincipal(output, input);
+        }else{
+            System.out.println("Usuario registrado correctamente");
+            pantallaPrincipal(output, input);
+        }
     }
 
     private static void pantallaAcceso(ObjectOutputStream output, ObjectInputStream input) {

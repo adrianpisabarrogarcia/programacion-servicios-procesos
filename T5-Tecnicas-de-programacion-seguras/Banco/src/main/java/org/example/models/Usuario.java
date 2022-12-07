@@ -1,5 +1,7 @@
 package org.example.models;
 
+import org.example.Servidor;
+
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
@@ -154,5 +156,27 @@ public class Usuario implements Serializable {
         //Debe tener al menos una letra mayuscula, una minuscula, un numero y un caracter especial
         //mínimo 8 caracteres
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,}$");
+    }
+
+    public String validarUsuarioServer() {
+        String validacion = "";
+        if (!validarNombre(nombre)) {
+            validacion += "El nombre debe tener entre 1 y 20 caracteres";
+        }
+        if (!validarApellido(apellido)) {
+            validacion += "El apellido debe tener entre 1 y 20 caracteres";
+        }
+        if (!validarEdad(String.valueOf(edad))) {
+            validacion += "La edad debe ser mayor a 18";
+        }
+        if (!validarEmail(email)) {
+            validacion += "El email no es valido";
+        }
+        for (Usuario usuario: Servidor.usuarios) {
+            if (usuario.getEmail().equals(email)) {
+                validacion += "El email ya esta registrado";
+            }
+        }
+        return validacion;
     }
 }

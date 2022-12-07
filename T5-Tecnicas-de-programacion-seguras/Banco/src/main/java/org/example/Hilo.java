@@ -2,21 +2,17 @@ package org.example;
 
 import org.apache.log4j.Logger;
 import org.example.models.Usuario;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
-import java.net.*;
-import java.math.*;
 import java.security.*;
-import java.security.spec.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import javax.crypto.*;
 import javax.crypto.spec.*;
-import javax.crypto.interfaces.*;
 
 
 public class Hilo extends Thread {
@@ -32,10 +28,6 @@ public class Hilo extends Thread {
     Cipher cipherCliente;
     //Clave simetrica del cliente
     byte[] claveSimetrica = null;
-
-    //Usuarios de la aplicacion
-    ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-
 
     public Hilo(Socket socket) {
         this.socket = socket;
@@ -104,10 +96,10 @@ public class Hilo extends Thread {
         publicKeyServidor = claves.getPublic();
 
         //Pruebas de envio y recepcion
-        pruebasEnvioRecepcion(output, input);
+        //pruebasEnvioRecepcion(output, input);
 
-
-        //pantallaPrincipal(output, input);
+        //Pantalla principal
+        pantallaPrincipal(output, input);
 
     }
 
@@ -197,7 +189,46 @@ public class Hilo extends Thread {
         return contenidoDescifrado;
     }
 
-    //Métodos de la aplicación
+    //Método para enviar un mensaje cifrado
+    public void enviarMensaje(ObjectOutputStream output, String mensaje) {
+        byte[] mensajeCifrado = null;
+        //cifrar mensaje
+        mensajeCifrado = cifrarContenido(mensaje);
+        //enviar mensaje cifrado
+        try {
+            output.writeObject(mensajeCifrado);
+            logger.info("Enviado el mensaje cifrado");
+        } catch (IOException e) {
+            logger.error("Error al enviar el mensaje cifrado" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Método para recibir un mensaje cifrado
+    public String recibirMensaje(ObjectInputStream input) {
+        //recibir mensaje cifrado
+        byte[] mensajeCifrado = null;
+        try {
+            mensajeCifrado = (byte[]) input.readObject();
+            logger.info("Recibido el mensaje cifrado");
+        } catch (Exception e) {
+            logger.error("Error al recibir el mensaje cifrado" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //descifrar mensaje
+        String mensaje = null;
+        try {
+            mensaje = descifrarContenido(mensajeCifrado);
+            logger.info("Descifrado el mensaje");
+            System.out.println("Mensaje descifrado: " + mensaje);
+        } catch (Exception e) {
+            logger.error("Error al descifrar el mensaje" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return mensaje;
+    }
+
+    /********** Métodos de la aplicación **********/
 
     private void pantallaPrincipal(ObjectOutputStream output, ObjectInputStream input) {
         String mensaje = "Bienvenido al sistema de transacciones de la cuenta bancaria On-Line\n" +
@@ -238,27 +269,137 @@ public class Hilo extends Thread {
         }
     }
 
-    private void pantallaLogin(ObjectOutputStream output, ObjectInputStream input) {
-
-        //Esperar a el mensaje del cliente
-        Usuario usuario = null;
+    private void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {
+        //Ir haciendo el registro del usuario
+        Usuario usuario = new Usuario();
+        //Recibir el nombre
+        String nombre = "";
         try {
-            usuario = (Usuario) input.readObject();
+            nombre = recibirMensaje(input);
         } catch (Exception e) {
-            logger.error("Error al leer el mensaje del cliente" + e.getMessage());
+            logger.error("Error al leer el nombre del cliente" + e.getMessage());
             throw new RuntimeException(e);
         }
-        logger.info("Usuario recibido del cliente: " + usuario);
+        usuario.setNombre(nombre);
+        //Recibir el apellido
+        String apellido = "";
+        try {
+            apellido = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer el apellido del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        usuario.setApellido(apellido);
+        //Recibir la edad
+        String edad = "";
+        try {
+            edad = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer la edad del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        usuario.setEdad(Integer.parseInt(edad));
+        //Recibir el email
+        String email = "";
+        try {
+            email = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer el email del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        usuario.setEmail(email);
+        //Recibir la password
+        String password = "";
+        try {
+            password = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer la password del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //From string to byte[] base64
+        byte[] passwordCifrada = Base64.getDecoder().decode(password);
+        usuario.setPassword(passwordCifrada);
 
+        //Guardar el usuario en el arraylist
+        Servidor.usuarios.add(usuario);
 
+        //Enviar mensaje de confirmación
+        String mensaje = "Usuario registrado correctamente";
+        try {
+            enviarMensaje(output, mensaje);
+        } catch (Exception e) {
+            logger.error("Error al enviar el mensaje de confirmación al cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
-
+        //Imprimir el arraylist
+        logger.info("Usuario registrado: " + usuario.toString());
+        pantallaPrincipal(output, input);
 
     }
 
-    private void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {
-        //Sin implementar
-        System.out.println("Sin implementar");
+    private void pantallaLogin(ObjectOutputStream output, ObjectInputStream input) {
+
+        //Recibir el email del cliente
+        String email = "";
+        try {
+            email = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer el email del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Recibir el password del cliente
+        String password = "";
+        try {
+            password = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer el password del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Hashear el password
+        byte[] passwordLoginHash = null;
+        try {
+            passwordLoginHash = HashManagerSHA256.getDigest(password.getBytes());
+        } catch (Exception e) {
+            logger.error("Error al hashear el password" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Buscar el usuario
+        boolean usuarioEncontrado = false;
+        for (Usuario usuario : Servidor.usuarios) {
+            if (usuario.getEmail().equals(email)) {
+                byte[] passwordHash = usuario.getPassword();
+                boolean iguales = false;
+                try {
+                    iguales = HashManagerSHA256.compararResumenes(passwordLoginHash, passwordHash);
+                } catch (Exception e) {
+                    logger.error("Error al comparar los passwords" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+                if(iguales){
+                    usuarioEncontrado = true;
+                }
+                break;
+            }
+        }
+
+        String mensaje = "";
+        if(usuarioEncontrado){
+            mensaje = "Acceso correcto";
+            enviarMensaje(output, mensaje);
+            pantallaMenuUsuario(output, input);
+        }else{
+            mensaje = "Acceso incorrecto";
+            enviarMensaje(output, mensaje);
+            pantallaPrincipal(output, input);
+        }
+    }
+
+    private void pantallaMenuUsuario(ObjectOutputStream output, ObjectInputStream input) {
+        System.out.println("Pantalla menu usuario");
     }
 
 

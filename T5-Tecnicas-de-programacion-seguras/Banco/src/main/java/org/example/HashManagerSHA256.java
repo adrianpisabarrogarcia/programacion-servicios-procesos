@@ -15,7 +15,7 @@ public class HashManagerSHA256 {
     public static boolean compararResumenes(byte[] resumen1, byte[] resumen2) throws NoSuchAlgorithmException {
         MessageDigest algoritmo = MessageDigest.getInstance(ALGORITMO);
         algoritmo.reset();
-        return algoritmo.isEqual(resumen1, resumen2);
+        return MessageDigest.isEqual(resumen1, resumen2);
     }
 
 }

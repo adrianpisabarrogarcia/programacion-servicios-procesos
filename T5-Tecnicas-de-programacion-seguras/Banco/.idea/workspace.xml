@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente">
+    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅ Envío cifrado del servidor al cliente&#10;✅ Envío cifrado del cliente al servidor">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/general.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/general.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HashManagerSHA256.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HashManagerSHA256.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Servidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Servidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +64,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/example" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Cliente">
+  <component name="RunManager" selected="Application.Servidor">
     <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Cliente" />
       <module name="Banco" />
@@ -114,7 +121,7 @@
       <workItem from="1670065325704" duration="1205000" />
       <workItem from="1670080379738" duration="4170000" />
       <workItem from="1670333089142" duration="56000" />
-      <workItem from="1670333198678" duration="9050000" />
+      <workItem from="1670333198678" duration="12570000" />
     </task>
     <task id="LOCAL-00001" summary="Pantalla Principal ✅">
       <created>1670083642316</created>
@@ -151,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670440879131</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="✅ Envío cifrado del servidor al cliente&#10;✅ Envío cifrado del cliente al servidor">
+      <created>1670440996211</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670440996211</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +188,8 @@
     <MESSAGE value=" Models" />
     <MESSAGE value="✨ Pantalla principal" />
     <MESSAGE value="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente" />
-    <option name="LAST_COMMIT_MESSAGE" value="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente" />
+    <MESSAGE value="✅ Envío cifrado del servidor al cliente&#10;✅ Envío cifrado del cliente al servidor" />
+    <option name="LAST_COMMIT_MESSAGE" value="✅ Envío cifrado del servidor al cliente&#10;✅ Envío cifrado del cliente al servidor" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

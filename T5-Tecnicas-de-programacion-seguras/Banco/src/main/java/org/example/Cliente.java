@@ -7,14 +7,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Scanner;
-import java.io.*;
-import java.net.*;
-import java.math.*;
 import java.security.*;
-import java.security.spec.*;
 import javax.crypto.*;
-import javax.crypto.spec.*;
 
 public class Cliente {
 
@@ -104,10 +100,10 @@ public class Cliente {
 
 
         //Pruebas de envio y recepcion
-        pruebasEnvioRecepcion(output, input);
+        //pruebasEnvioRecepcion(output, input);
 
-        //pantallaRegistro(output, input);
-
+        //Pantalla Principal
+        pantallaPrincipal(output, input);
     }
 
     private static void pruebasEnvioRecepcion(ObjectOutputStream output, ObjectInputStream input) {
@@ -199,6 +195,35 @@ public class Cliente {
 
     }
 
+    //Método para enviar un mensaje cifrado al servidor
+    private static void enviarMensajeCifrado(ObjectOutputStream output, String mensaje) {
+        //Cifrar el mensaje
+        byte[] mensajeCifrado = cifrarSimetrico(mensaje);
+        //Enviar el mensaje cifrado
+        try {
+            output.writeObject(mensajeCifrado);
+            logger.info("Enviado el mensaje cifrado al servidor");
+        } catch (Exception e) {
+            logger.error("Error al enviar el mensaje cifrado al servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Método para recibir un mensaje cifrado del servidor
+    private static String recibirMensajeCifrado(ObjectInputStream input) {
+        //Esperar la respuesta del servidor
+        byte[] mensajeRecibido = null;
+        try {
+            mensajeRecibido = (byte[]) input.readObject();
+            logger.info("Recibido el mensaje cifrado del servidor");
+        } catch (Exception e) {
+            logger.error("Error al recibir el mensaje cifrado del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        //Descifrar el mensaje
+        String mensajeDescifrado = descifrarSimetrico(mensajeRecibido);
+        return mensajeDescifrado;
+    }
 
     private static void pantallaPrincipal(ObjectOutputStream output, ObjectInputStream input) {
         //Esperar a el mensaje del servidor
@@ -234,29 +259,6 @@ public class Cliente {
         }
     }
 
-    private static void pantallaAcceso(ObjectOutputStream output, ObjectInputStream input) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Introduzca tu correo electronico: ");
-        String email = scanner.nextLine();
-        System.out.println("Introduzca tu contraseña: ");
-        String password = scanner.nextLine();
-        Usuario usuario = new Usuario();
-
-        //Password a byte[]
-        byte[] passwordBytes = password.getBytes();
-
-        usuario.setEmail(email);
-        usuario.setPassword(passwordBytes);
-
-        try {
-            output.writeObject(usuario);
-        } catch (IOException e) {
-            logger.error("Error al enviar el usuario al servidor" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-    }
-
     private static void pantallaRegistro(ObjectOutputStream output, ObjectInputStream input) {
         Scanner scanner = new Scanner(System.in);
         Usuario usuario = new Usuario();
@@ -267,11 +269,7 @@ public class Cliente {
             System.out.println("Ingrese el nombre de usuario: ");
             String nombre = scanner.nextLine();
             if (usuario.validarNombre(nombre)) {
-                //Cifrar el nombre con la clave simétrica
-                byte[] nombreCifrado = cifrarSimetrico(nombre);
-
-
-                usuario.setNombre(nombre);
+                enviarMensajeCifrado(output, nombre);
                 nombreValido = true;
             }
         } while (!nombreValido);
@@ -282,7 +280,7 @@ public class Cliente {
             System.out.println("Ingrese el apellido de usuario: ");
             String apellido = scanner.nextLine();
             if (usuario.validarApellido(apellido)) {
-                usuario.setApellido(apellido);
+                enviarMensajeCifrado(output, apellido);
                 apellidoValido = true;
             }
         } while (!apellidoValido);
@@ -293,7 +291,7 @@ public class Cliente {
             System.out.println("Ingrese la edad de usuario: ");
             String edad = scanner.nextLine();
             if (usuario.validarEdad(edad)) {
-                usuario.setEdad(Integer.parseInt(edad));
+                enviarMensajeCifrado(output, edad);
                 edadValida = true;
             }
         } while (!edadValida);
@@ -304,7 +302,7 @@ public class Cliente {
             System.out.println("Ingrese el email de usuario: ");
             String email = scanner.nextLine();
             if (usuario.validarEmail(email)) {
-                usuario.setEmail(email);
+                enviarMensajeCifrado(output, email);
                 emailValido = true;
             }
         } while (!emailValido);
@@ -327,13 +325,52 @@ public class Cliente {
                     logger.error("Error al hashear la contraseña" + e.getMessage());
                     throw new RuntimeException(e);
                 }
-                usuario.setPassword(passwordHash);
+                //from byte[] to String
+                String passwordHashString = Base64.getEncoder().encodeToString(passwordHash);
+                enviarMensajeCifrado(output, passwordHashString);
                 passwordValido = true;
             }
         } while (!passwordValido);
 
-        //Imprimir usuario
-        System.out.println("Usuario a enviar: " + usuario.toString());
+        //Esperar a el mensaje del servidor para saber si se ha registrado correctamente
+        String mensajeRegistro = null;
+        try {
+            mensajeRegistro = recibirMensajeCifrado(input);
+        } catch (Exception e) {
+            logger.error("Error al leer el mensaje del servidor" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        System.out.println(mensajeRegistro);
+        pantallaPrincipal(output, input);
     }
+
+    private static void pantallaAcceso(ObjectOutputStream output, ObjectInputStream input) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduzca tu correo electronico: ");
+        String email = scanner.nextLine();
+        System.out.println("Introduzca tu contraseña: ");
+        String password = scanner.nextLine();
+        Usuario usuario = new Usuario();
+
+        //Enviar el email
+        enviarMensajeCifrado(output, email);
+        //Enviar la contraseña
+        enviarMensajeCifrado(output, password);
+
+        //Recibir el mensaje del servidor
+        String mensajeServidor = recibirMensajeCifrado(input);
+        System.out.println(mensajeServidor);
+        if (mensajeServidor.equals("Acceso correcto")) {
+            pantallaMenuUsuario(output, input);
+        } else {
+            pantallaPrincipal(output, input);
+        }
+
+    }
+
+    private static void pantallaMenuUsuario(ObjectOutputStream output, ObjectInputStream input) {
+        System.out.println("pantaMenuUsuario iniciada");
+    }
+
 }
 

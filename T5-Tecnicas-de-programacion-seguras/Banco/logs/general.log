@@ -1,11 +1,54 @@
-2022-12-07 20:22:30,532 INFO  [main] Cliente:41 - Conectado al servidor
-2022-12-07 20:22:30,569 INFO  [main] Cliente:51 - Generada la clav2022-12-07 20:22:2022-12-07 20:22:30,662 INFO  [main] Cliente:71 - Recibida la clave publica del servidor
-2022-12-07 20:22:30,664 INFO  [main] Cliente:84 - Encriptada la clave s2022-12-07 20:22:30,665 INFO  [Thread-0] Hilo:84 - Recibida la clave simétrica cifrada con la clave pública
-2022-12-07 20:22:30,685 INFO  [Thread-0] Hilo:95 - Descifrada la clave simétrica con la clave privada
-2022-12-07 20:22:30,685 INFO  [Thread-0] Hilo:119 - Recibido el mensaje cifrado
-2022-12-07 20:22:30,694 INFO  [Thread-0] Hilo:182 - Creado el descifrador simétrico
-2022-12-072022-12-07 20:22:30,695 INFO  [main] Cliente:130 - Recibido el mensaje cifrado del servidor
-2022-12-07 20:22:30,695 INFO  [main] Cliente:183 - Creado el cifrador simétrico
-2022-12-07 20:22:30,695 INFO  [main] Cliente:192 - Descifrado el contenido
-2022-12-07 20:22:30,695 INFO  [main] Cliente:138 - Mensaje recibido del servidor: Hola, soy el servidor
-do el mensaje cifrado
+2022-12-07 21:24:49,955 INFO  [main] Cliente:37 - Conectado al servidor
+2022-12-07 21:24:49,994 INFO  [main] Cliente:47 - Generada la clav2022-12-07 21:24:2022-12-07 21:24:50,027 INFO  [main] Cliente:67 - Recibida la clave publica del servidor
+2022-12-07 21:24:50,029 INFO  [main] Cliente:80 - Encriptada la clave s2022-12-07 21:24:50,030 INFO  [Thread-0] Hilo:76 - Recibida la clave simétrica cifrada con la clave pública
+2022-12-07 21:24:50,047 INFO  [Thre2022-12-07 21:24:56,372 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:24:56,373 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:24:56,373 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-02022-12-07 21:24:56,373 INFO  [Thread-0] Hilo:213 - Recibido el mensaje 2022-12-2022-12-07 21:24:56,390 INFO  [Thread-0] Hilo:174 - Creado el descifrador simétrico
+2022-12-07 21:24:56,390 INFO  [Thread-0] Hilo:184 - Contenido descifr2022-12-07 21:24:56,393 INFO  [main] Cliente:218 - Recibido el mensaje cifrado del servidor
+2022-12-07 21:24:56,393 INFO  [main] Cliente:179 - Creado el cifrador simétrico
+2022-12-07 21:24:56,393 INFO  [main] Cliente:188 - Descifrado el contenido
+2022-12-07 21:25:09,992 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:09,993 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:09,993 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:11,656 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:11,656 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:11,657 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:13,164 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:13,165 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:13,165 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:16,560 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:16,561 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:16,561 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:20,264 INFO  [main] Cliente:323 - Hasheada la contraseña
+2022-12-07 21:25:20,264 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:20,265 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:20,265 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:20,267 INFO  [main] Cliente:218 - Recibido el mensaje cifrado del servidor
+2022-12-07 21:25:20,267 INFO  [main] Cliente:179 - Creado el cifrador simétrico
+2022-12-07 21:25:20,267 INFO  [main] Cliente:188 - Descifrado el contenido
+2022-12-07 21:25:32,306 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:32,307 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:32,307 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:32,307 INFO  [main] Cliente:150 - Creado el cifrador simétrico
+2022-12-07 21:25:32,308 INFO  [main] Cliente:159 - Cifrado el contenido
+2022-12-07 21:25:32,308 INFO  [main] Cliente:205 - Enviado el mensaje cifrado al servidor
+2022-12-07 21:25:32,309 INFO  [main] Cliente:218 - Recibido el mensaje cifrado del servidor
+2022-12-07 21:25:32,310 INFO  [main] Cliente:179 - Creado el cifrador simétrico
+2022-12-07 21:25:32,310 INFO  [main] Cliente:188 - Descifrado el contenido
+ontenido
+2022-12-07 21:25:20,266 INFO  [Thread-0] Hilo:200 - Enviado el mensaje cifrado
+2022-12-07 21:25:20,282 INFO  [Thread-0] Hilo:336 - Usuario registrado: Usuario{id=0, nombre='adrian', apellido='22', edad=22, email='asd@asd.es', password='[B@d0fe3ea', credentialsPath='null', documentoFirmado=false, cuentaBancaria=null}
+2022-12-07 21:25:20,282 INFO  [Thread-0] Hilo:242 - Mensaje de pantalla principal enviado al cliente
+2022-12-07 21:25:24,797 INFO  [Thread-0] Hilo:255 - Opcion recibida del cliente: 2
+2022-12-07 21:25:32,307 INFO  [Thread-0] Hilo:213 - Recibido el mensaje cifrado
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:174 - Creado el descifrador simétrico
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:184 - Contenido descifrado
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:222 - Descifrado el mensaje
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:213 - Recibido el mensaje cifrado
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:174 - Creado el descifrador simétrico
+2022-12-07 21:25:32,308 INFO  [Thread-0] Hilo:184 - Contenido descifrado
+2022-12-07 21:25:32,309 INFO  [Thread-0] Hilo:222 - Descifrado el mensaje
+2022-12-07 21:25:32,309 INFO  [Thread-0] Hilo:149 - Obtenidos los datos del cifrador
+2022-12-07 21:25:32,309 INFO  [Thread-0] Hilo:158 - Cifrado el contenido
+2022-12-07 21:25:32,309 INFO  [Thread-0] Hilo:200 - Enviado el mensaje cifrado

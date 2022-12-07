@@ -1,9 +1,11 @@
-2022-12-07 20:20:04,067 INFO  [main] Cliente:41 - Conectado al servidor
-2022-12-07 20:20:04,105 INFO  [main] Cliente:51 - Generada la clav2022-12-07 20:20:2022-12-07 20:20:04,166 INFO  [main] Cliente:71 - Recibida la clave publica del servidor
-2022-12-07 20:20:04,168 INFO  [main] Cliente:84 - Encriptada la clave s2022-12-07 20:20:04,169 INFO  [Thread-0] Hilo:84 - Recibida la clave simétrica cifrada con la clave pública
-2022-12-07 20:20:04,187 INFO  [Thread-0] Hilo:95 - Descifrada la clave simétrica con la clave privada
-2022-12-07 20:20:04,187 INFO  [Thread-0] Hilo:119 - Recibido el mensaje cifrado
-2022-12-07 20:20:04,196 INFO  [Thread-0] Hilo:176 - Creado el descifrador simétrico
-2022-12-07 20:20:04,196 INFO  [Thread-0] Hilo:186 - Contenido descifrado
-2022-12-07 20:20:04,196 INFO  [Thread-0] Hilo:128 - Descifrado el mensaje
-2022-12-07 20:20:04,200 ERROR [Thread-0] Hilo:163 - Error al cifrar el contenidoWrong algorithm: AES or Rijndael required
+2022-12-07 20:22:30,532 INFO  [main] Cliente:41 - Conectado al servidor
+2022-12-07 20:22:30,569 INFO  [main] Cliente:51 - Generada la clav2022-12-07 20:22:2022-12-07 20:22:30,662 INFO  [main] Cliente:71 - Recibida la clave publica del servidor
+2022-12-07 20:22:30,664 INFO  [main] Cliente:84 - Encriptada la clave s2022-12-07 20:22:30,665 INFO  [Thread-0] Hilo:84 - Recibida la clave simétrica cifrada con la clave pública
+2022-12-07 20:22:30,685 INFO  [Thread-0] Hilo:95 - Descifrada la clave simétrica con la clave privada
+2022-12-07 20:22:30,685 INFO  [Thread-0] Hilo:119 - Recibido el mensaje cifrado
+2022-12-07 20:22:30,694 INFO  [Thread-0] Hilo:182 - Creado el descifrador simétrico
+2022-12-072022-12-07 20:22:30,695 INFO  [main] Cliente:130 - Recibido el mensaje cifrado del servidor
+2022-12-07 20:22:30,695 INFO  [main] Cliente:183 - Creado el cifrador simétrico
+2022-12-07 20:22:30,695 INFO  [main] Cliente:192 - Descifrado el contenido
+2022-12-07 20:22:30,695 INFO  [main] Cliente:138 - Mensaje recibido del servidor: Hola, soy el servidor
+do el mensaje cifrado

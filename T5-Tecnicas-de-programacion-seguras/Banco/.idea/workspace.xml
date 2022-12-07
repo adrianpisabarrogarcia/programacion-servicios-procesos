@@ -4,17 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✨ Pantalla principal">
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/HashManagerSHA256.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/general.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/general.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
+    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente">
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +114,7 @@
       <workItem from="1670065325704" duration="1205000" />
       <workItem from="1670080379738" duration="4170000" />
       <workItem from="1670333089142" duration="56000" />
-      <workItem from="1670333198678" duration="8776000" />
+      <workItem from="1670333198678" duration="9050000" />
     </task>
     <task id="LOCAL-00001" summary="Pantalla Principal ✅">
       <created>1670083642316</created>
@@ -146,7 +137,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670084172132</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente">
+      <created>1670440873990</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1670440873990</updated>
+    </task>
+    <task id="LOCAL-00005" summary="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente">
+      <created>1670440879131</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670440879131</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,7 +173,8 @@
     <MESSAGE value="Pantalla Principal ✅" />
     <MESSAGE value=" Models" />
     <MESSAGE value="✨ Pantalla principal" />
-    <option name="LAST_COMMIT_MESSAGE" value="✨ Pantalla principal" />
+    <MESSAGE value="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente" />
+    <option name="LAST_COMMIT_MESSAGE" value="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

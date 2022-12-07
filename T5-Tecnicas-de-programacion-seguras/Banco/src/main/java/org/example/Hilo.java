@@ -149,20 +149,26 @@ public class Hilo extends Thread {
     //Método Cifrador de contenido a enviar
     public byte[] cifrarContenido(String contenido) {
         byte[] contenidoCifrado = null;
+
+        //Obtener datos del cifrador
         try {
-            // Crear cifrador
-            cipherCliente = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            //obtener clave simetrica
-            SecretKeySpec claveSimetricaCliente = new SecretKeySpec(claveSimetrica, "AES/ECB/PKCS5Padding");
-            //inicializar cifrador
-            cipherCliente.init(Cipher.ENCRYPT_MODE, claveSimetricaCliente);
-            //cifrar contenido
+            cipherCliente = Cipher.getInstance("AES");
+            cipherCliente.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(claveSimetrica, "AES"));
+            logger.info("Obtenidos los datos del cifrador");
+        } catch (Exception e) {
+            logger.error("Error al obtener los datos del cifrador" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        //Cifrar contenido
+        try {
             contenidoCifrado = cipherCliente.doFinal(contenido.getBytes());
-            logger.info("Contenido cifrado");
+            logger.info("Cifrado el contenido");
         } catch (Exception e) {
             logger.error("Error al cifrar el contenido" + e.getMessage());
             throw new RuntimeException(e);
         }
+
         return contenidoCifrado;
     }
 

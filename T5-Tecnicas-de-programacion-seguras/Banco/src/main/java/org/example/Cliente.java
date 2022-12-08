@@ -394,7 +394,48 @@ public class Cliente {
     }
 
     private static void pantallaMenuUsuario(ObjectOutputStream output, ObjectInputStream input) {
-        System.out.println("pantaMenuUsuario iniciada");
+        boolean opcionValida = false;
+        do{
+            System.out.println("Elige la opción correcta:");
+            System.out.println("1. Consultar saldo de su cuenta bancaria");
+            System.out.println("2. Realizar una transferencia");
+            System.out.println("3. Salir");
+            System.out.println("Introduzca el número de la opción: ");
+            Scanner scanner = new Scanner(System.in);
+            String opcion = scanner.nextLine();
+            switch (opcion) {
+                case "1" -> {
+                    opcionValida = true;
+                    enviarMensajeCifrado(output, opcion);
+                    pantallaSaldo(output, input);
+                }
+                case "2" -> {
+                    opcionValida = true;
+                    enviarMensajeCifrado(output, opcion);
+                    pantallaTransferencia(output, input);
+                }
+                case "3" -> {
+                    try {
+                        enviarMensajeCifrado(output, opcion);
+                        output.close();
+                        input.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.exit(0);
+                }
+                default -> System.out.println("Opción no válida");
+            }
+        }while (!opcionValida);
+    }
+
+    private static void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
+
+
+
+    }
+
+    private static void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
     }
 
 }

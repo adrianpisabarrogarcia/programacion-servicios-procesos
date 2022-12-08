@@ -2,6 +2,8 @@ package org.example;
 
 import org.apache.log4j.Logger;
 import org.example.firmaelectronica.FirmaServer;
+import org.example.models.CuentaBancaria;
+import org.example.models.Transaccion;
 import org.example.models.Usuario;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,12 +12,12 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
 import java.security.*;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
+import java.util.Random;
 import javax.crypto.*;
 import javax.crypto.spec.*;
-
 
 public class Hilo extends Thread {
 
@@ -256,18 +258,20 @@ public class Hilo extends Thread {
         }
         logger.info("Opcion recibida del cliente: " + opcion);
         switch (opcion) {
-            case "1":
-                pantallaRegistro(output, input);
-                break;
-            case "2":
-                pantallaLogin(output, input);
-                break;
-            case "3":
-                //salir
-                break;
-            default:
-                pantallaPrincipal(output, input);
-                break;
+            case "1" -> pantallaRegistro(output, input);
+            case "2" -> pantallaLogin(output, input);
+            case "3" -> {
+                try {
+                    output.close();
+                    input.close();
+                    logger.info("Conexión con el cliente finalizada");
+                    socket.close();
+                } catch (IOException e) {
+                    logger.error("Error al cerrar la conexión con el cliente" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+            default -> pantallaPrincipal(output, input);
         }
     }
 
@@ -334,24 +338,44 @@ public class Hilo extends Thread {
 
         //Firmar el mensaje electronicamente
         FirmaServer.firmarServidor(output);
-
+        usuario.setDocumentoFirmado(true);
 
         //Comprobar en el lado del servidor que el usuario se ha registrado correctamente
         String validacion = usuario.validarUsuarioServer();
+
+        if(validacion.equals("")){
+            //Vamos a crear datos ficticios para la cuenta bancaria
+            CuentaBancaria cuentaBancaria = new CuentaBancaria();
+            Random random = new Random();
+            int low = 1;
+            int high = 20;
+            cuentaBancaria.setNumeroCuenta(Integer.toString(Servidor.usuarios.size() + 1));
+            int randomTransacciones = random.nextInt(high-low) + low;
+            System.out.println("Numero de transacciones: " + randomTransacciones);
+            ArrayList<Transaccion> transacciones = new ArrayList<>();
+            for (int i = 0; i < randomTransacciones; i++){
+                Transaccion transaccion = new Transaccion();
+                transaccion.setDescripcion("Concepto " + i);
+                Date fecha = new Date();
+                transaccion.setFecha(fecha.toString());
+                transaccion.setImporte(random.nextInt(high-low) + low);
+                transacciones.add(transaccion);
+            }
+            cuentaBancaria.setTransacciones(transacciones);
+            usuario.setCuentaBancaria(cuentaBancaria);
+            //Guardar el usuario en el arraylist
+            Servidor.usuarios.add(usuario);
+
+            //Imprimir el usuario guardado
+            logger.info("Usuario registrado: " + usuario.toString());
+        }
+
         //Enviar la validacion al cliente
         try {
             enviarMensaje(output, validacion);
         } catch (Exception e) {
             logger.error("Error al enviar la validacion al cliente" + e.getMessage());
             throw new RuntimeException(e);
-        }
-
-        if(validacion.equals("")){
-            //Guardar el usuario en el arraylist
-            Servidor.usuarios.add(usuario);
-
-            //Imprimir el usuario guardado
-            logger.info("Usuario registrado: " + usuario.toString());
         }
 
         //Ir a la pantalla principal haya ido bien o mal
@@ -419,11 +443,40 @@ public class Hilo extends Thread {
     }
 
     private void pantallaMenuUsuario(ObjectOutputStream output, ObjectInputStream input) {
-        System.out.println("Pantalla menu usuario");
+
+        String recibirOpcion = "";
+        try {
+            recibirOpcion = recibirMensaje(input);
+        } catch (Exception e) {
+            logger.error("Error al leer la opcion del cliente" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        switch (recibirOpcion) {
+            case "1" -> pantallaSaldo(output, input);
+            case "2" -> pantallaTransferencia(output, input);
+            case "3" -> {
+                try {
+                    output.close();
+                    input.close();
+                    socket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            default -> pantallaMenuUsuario(output, input);
+        }
+
+
+
     }
 
+    private void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
 
+    }
 
+    private void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
+
+    }
 
 
 }

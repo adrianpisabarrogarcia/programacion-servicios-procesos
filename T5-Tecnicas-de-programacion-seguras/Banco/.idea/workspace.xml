@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅ Login">
+    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="📝Registro">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/firmaelectronica/FirmaCliente.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/firmaelectronica/FirmaServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/general.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/general.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Servidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Servidor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Servidor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Servidor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ejercicio5/target/classes/org/example/HashManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ejercicio5/target/classes/org/example/OneRegistro.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio5/target/classes/org/example/OneRegistro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ejercicio5/target/classes/org/example/TwoLogin.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio5/target/classes/org/example/TwoLogin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicio6/src/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio6/src/Cliente.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,21 +43,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/adrianpisabarrogarcia/Desktop/Git/programacion-servicios-procesos/T5-Tecnicas-de-programacion-seguras/Banco/src/main/java/org/example",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/adrianpisabarrogarcia/Desktop/Git/programacion-servicios-procesos/T5-Tecnicas-de-programacion-seguras/Banco/src/main/java/org/example&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.example.models" />
@@ -63,8 +66,11 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/example" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.example.firmaelectronica" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Servidor">
+  <component name="RunManager" selected="Application.Cliente">
     <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Cliente" />
       <module name="Banco" />
@@ -121,7 +127,9 @@
       <workItem from="1670065325704" duration="1205000" />
       <workItem from="1670080379738" duration="4170000" />
       <workItem from="1670333089142" duration="56000" />
-      <workItem from="1670333198678" duration="17648000" />
+      <workItem from="1670333198678" duration="18595000" />
+      <workItem from="1670525285824" duration="350000" />
+      <workItem from="1670525647013" duration="1880000" />
     </task>
     <task id="LOCAL-00001" summary="Pantalla Principal ✅">
       <created>1670083642316</created>
@@ -172,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670444757580</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="📝Registro">
+      <created>1670451230210</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1670451230210</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +212,8 @@
     <MESSAGE value="✅ Envío cifrado del cliente al servidor&#10;❌ Envío cifrado del servidor al cliente" />
     <MESSAGE value="✅ Envío cifrado del servidor al cliente&#10;✅ Envío cifrado del cliente al servidor" />
     <MESSAGE value="✅ Login" />
-    <option name="LAST_COMMIT_MESSAGE" value="✅ Login" />
+    <MESSAGE value="Registro" />
+    <option name="LAST_COMMIT_MESSAGE" value="Registro" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

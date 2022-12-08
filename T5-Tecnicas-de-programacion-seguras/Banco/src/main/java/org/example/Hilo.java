@@ -1,6 +1,7 @@
 package org.example;
 
 import org.apache.log4j.Logger;
+import org.example.firmaelectronica.FirmaServer;
 import org.example.models.Usuario;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -331,28 +332,8 @@ public class Hilo extends Thread {
         }
         System.out.println("Confirmacion de la firma: " + confirmacion);
 
-        //Ahora vamos a firmar el documento
-        Signature firmaDigital = null;
-        byte[] firmaBytes = null;
-        try {
-            firmaDigital = Signature.getInstance("SHA256withRSA");
-            //From calveSimetrica to PrivateKey
-            PrivateKey clavePrivada = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(claveSimetrica));
-            firmaDigital.initSign(clavePrivada);
-            firmaDigital.update(usuario.toString().getBytes());
-            firmaBytes = firmaDigital.sign();
-        } catch (Exception e) {
-            logger.error("Error al firmar el documento" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        //Enviar la firma al cliente
-        try {
-            enviarMensaje(output, Base64.getEncoder().encodeToString(firmaBytes));
-        } catch (Exception e) {
-            logger.error("Error al enviar la firma al cliente" + e.getMessage());
-            throw new RuntimeException(e);
-        }
+        //Firmar el mensaje electronicamente
+        FirmaServer.firmarServidor(output);
 
 
         //Comprobar en el lado del servidor que el usuario se ha registrado correctamente
@@ -365,21 +346,15 @@ public class Hilo extends Thread {
             throw new RuntimeException(e);
         }
 
+        if(validacion.equals("")){
+            //Guardar el usuario en el arraylist
+            Servidor.usuarios.add(usuario);
 
-        //Guardar el usuario en el arraylist
-        Servidor.usuarios.add(usuario);
-
-        //Enviar mensaje de confirmación
-        String mensaje = "Usuario registrado correctamente";
-        try {
-            enviarMensaje(output, mensaje);
-        } catch (Exception e) {
-            logger.error("Error al enviar el mensaje de confirmación al cliente" + e.getMessage());
-            throw new RuntimeException(e);
+            //Imprimir el usuario guardado
+            logger.info("Usuario registrado: " + usuario.toString());
         }
 
-        //Imprimir el arraylist
-        logger.info("Usuario registrado: " + usuario.toString());
+        //Ir a la pantalla principal haya ido bien o mal
         pantallaPrincipal(output, input);
 
     }

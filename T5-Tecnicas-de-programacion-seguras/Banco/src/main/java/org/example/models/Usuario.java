@@ -172,8 +172,8 @@ public class Usuario implements Serializable {
         if (!validarEmail(email)) {
             validacion += "El email no es valido";
         }
-        for (Usuario usuario: Servidor.usuarios) {
-            if (usuario.getEmail().equals(email)) {
+        for (Usuario usu: Servidor.usuarios) {
+            if (usu.getEmail().equals(email)) {
                 validacion += "El email ya esta registrado";
             }
         }

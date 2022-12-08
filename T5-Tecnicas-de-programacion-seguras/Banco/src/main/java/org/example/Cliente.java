@@ -1,6 +1,7 @@
 package org.example;
 
 import org.apache.log4j.Logger;
+import org.example.firmaelectronica.FirmaCliente;
 import org.example.models.Usuario;
 
 import java.io.IOException;
@@ -337,54 +338,17 @@ public class Cliente {
         do{
             System.out.println("Vamos a firmar un documento de la aceptacion de politicas del banco Online:");
             System.out.println("Firme digitalmente el mensaje para confirmar su registro");
+            System.out.println("Si desea leer el dumento, vaya a esta página: https://www.bancosantander.es/politica-de-privacidad");
             System.out.println("Para firmar el documento, escriba 'firmar' y presione enter");
             String opcion = scanner.nextLine();
             if (opcion.equals("firmar")) {
                 enviarMensajeCifrado(output, opcion);
+                FirmaCliente.firmarCliente(input);
                 documentoValido = true;
             }else {
                 System.out.println("Opcion no valida, es necesario firmar el documento para registrarse.");
             }
         }while (!documentoValido);
-
-        //recibir la firma del servidor
-        byte[] firma = null;
-        try {
-            String firmaRecibida = recibirMensajeCifrado(input);
-            firma = Base64.getDecoder().decode(firmaRecibida);
-            logger.info("Recibida la firma del servidor");
-        } catch (Exception e) {
-            logger.error("Error al recibir la firma del servidor" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        //Comprobar la firma
-        Signature firmaFirmada = null;
-        try {
-            firmaFirmada = Signature.getInstance("SHA1WITHRSA");
-            firmaFirmada.initVerify(publicKeyServidor);
-            firmaFirmada.update("firma".getBytes());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        boolean verificacion = false;
-        try {
-            verificacion = firmaFirmada.verify(firma);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Verificacion de la firma: " + verificacion);
-
-        if(verificacion){
-            System.out.println("La firma es correcta");
-        } else {
-            System.out.println("La firma es incorrecta");
-        }
-
-
-
-
-
 
 
         //Esperar a el mensaje del servidor para saber si la validacion en el servidor fue correcta

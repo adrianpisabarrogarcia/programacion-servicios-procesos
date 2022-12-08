@@ -10,6 +10,12 @@ import java.util.ArrayList;
 public class Servidor {
 
     private static Logger logger = Logger.getLogger(Servidor.class);
+    //logger.info("Hello world!");
+    //logger.debug("Hello world!");
+    //logger.error("Hello world!");
+    //logger.warn("Hello world!");
+    //logger.fatal("Hello world!");
+
     public static final int PUERTO = 50001;
 
     //Usuarios
@@ -17,11 +23,7 @@ public class Servidor {
 
 
     public static void main(String[] args) {
-        //logger.info("Hello world!");
-        //logger.debug("Hello world!");
-        //logger.error("Hello world!");
-        //logger.warn("Hello world!");
-        //logger.fatal("Hello world!");
+
 
         //Crear el socket del servidor
         ServerSocket serverSocket = null;

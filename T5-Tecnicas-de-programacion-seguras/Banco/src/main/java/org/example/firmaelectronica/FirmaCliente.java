@@ -1,35 +1,14 @@
+package org.example.firmaelectronica;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
+import java.security.*;
 
-public class Cliente {
-    public static final int PUERTO = 5001;
-    public static final String HOST = "localhost";
+public class FirmaCliente {
 
-    public static void main(String[] args) {
-
-        //Conectarse al servidor
-        Socket socket = null;
-        try {
-            socket = new Socket(HOST, PUERTO);
-            System.out.println("Conectado al servidor");
-        } catch (IOException e) {
-            System.out.println("Error al conectarse al servidor");
-        }
-
-        //Crear los flujos de entrada y salida
-        ObjectOutputStream output = null;
-        ObjectInputStream input = null;
-        try {
-            output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static void firmarCliente(ObjectInputStream input) {
 
         //Obtener la clave publica del servidor
         PublicKey clavePublica = null;
@@ -38,7 +17,6 @@ public class Cliente {
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Clave publica recibida es " + clavePublica);
 
         //Obtener el mensaje del servidor que va a ser firmado posteriormente por el servidor
         String mensaje = null;
@@ -48,6 +26,7 @@ public class Cliente {
             throw new RuntimeException(e);
         }
         System.out.println("Mensaje recibido es " + mensaje);
+        System.out.println("⬆️ con este mensaje vamos a firmar ⬆️");
 
         //Obtener la firma del servidor del mensaje
         byte[] firmaBytes = null;
@@ -72,7 +51,6 @@ public class Cliente {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Verificacion de la firma: " + verificacion);
 
         if(verificacion){
             System.out.println("La firma es correcta");
@@ -80,13 +58,8 @@ public class Cliente {
             System.out.println("La firma es incorrecta");
         }
 
-        //Cerramos los flujos
-        try {
-            output.close();
-            input.close();
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
+
+
 }

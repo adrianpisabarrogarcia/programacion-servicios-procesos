@@ -5,6 +5,7 @@ import org.example.firmaelectronica.FirmaServer;
 import org.example.models.CuentaBancaria;
 import org.example.models.Transaccion;
 import org.example.models.Usuario;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -55,7 +56,7 @@ public class Hilo extends Thread {
 
         // Crear flujos de entrada y de salida
         ObjectOutputStream output = null;
-        ObjectInputStream  input = null;
+        ObjectInputStream input = null;
         try {
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
@@ -343,22 +344,22 @@ public class Hilo extends Thread {
         //Comprobar en el lado del servidor que el usuario se ha registrado correctamente
         String validacion = usuario.validarUsuarioServer();
 
-        if(validacion.equals("")){
+        if (validacion.equals("")) {
             //Vamos a crear datos ficticios para la cuenta bancaria
             CuentaBancaria cuentaBancaria = new CuentaBancaria();
             Random random = new Random();
             int low = 1;
             int high = 20;
             cuentaBancaria.setNumeroCuenta(Integer.toString(Servidor.usuarios.size() + 1));
-            int randomTransacciones = random.nextInt(high-low) + low;
+            int randomTransacciones = random.nextInt(high - low) + low;
             System.out.println("Numero de transacciones: " + randomTransacciones);
             ArrayList<Transaccion> transacciones = new ArrayList<>();
-            for (int i = 0; i < randomTransacciones; i++){
+            for (int i = 0; i < randomTransacciones; i++) {
                 Transaccion transaccion = new Transaccion();
                 transaccion.setDescripcion("Concepto " + i);
                 Date fecha = new Date();
                 transaccion.setFecha(fecha.toString());
-                transaccion.setImporte(random.nextInt(high-low) + low);
+                transaccion.setImporte(random.nextInt(high - low) + low);
                 transacciones.add(transaccion);
             }
             cuentaBancaria.setTransacciones(transacciones);
@@ -423,7 +424,7 @@ public class Hilo extends Thread {
                     logger.error("Error al comparar los passwords" + e.getMessage());
                     throw new RuntimeException(e);
                 }
-                if(iguales){
+                if (iguales) {
                     usuarioEncontrado = true;
                 }
                 break;
@@ -431,11 +432,11 @@ public class Hilo extends Thread {
         }
 
         String mensaje = "";
-        if(usuarioEncontrado){
+        if (usuarioEncontrado) {
             mensaje = "Acceso correcto";
             enviarMensaje(output, mensaje);
             pantallaMenuUsuario(output, input);
-        }else{
+        } else {
             mensaje = "Acceso incorrecto";
             enviarMensaje(output, mensaje);
             pantallaPrincipal(output, input);
@@ -458,24 +459,108 @@ public class Hilo extends Thread {
                 try {
                     output.close();
                     input.close();
+                    System.out.println("Cerrando conexion con el cliente");
                     socket.close();
                 } catch (IOException e) {
+                    logger.error("Error al cerrar la conexion con el cliente" + e.getMessage());
                     throw new RuntimeException(e);
                 }
             }
             default -> pantallaMenuUsuario(output, input);
         }
-
-
-
     }
 
     private void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
-
+        String numeroCuenta = numeroCuentaValido(output, input);
+        //enviar todas las transacciones realizadas en la cuenta en forma de string
+        StringBuilder transacciones = new StringBuilder();
+        double saldoTotal = 0;
+        for (Usuario usuario : Servidor.usuarios) {
+            if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
+                CuentaBancaria cuentaBancaria = usuario.getCuentaBancaria();
+                ArrayList<Transaccion> transaccionesArrayList = cuentaBancaria.getTransacciones();
+                for (Transaccion transaccion : transaccionesArrayList){
+                    transacciones.append(transaccion.toString()).append("\n");
+                    saldoTotal += transaccion.getImporte();
+                }
+            }
+        }
+        enviarMensaje(output, transacciones.toString());
+        enviarMensaje(output, "Saldo total: " + saldoTotal);
+        pantallaMenuUsuario(output, input);
     }
 
     private void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
+        String numeroCuenta = numeroCuentaValido(output, input);
+        String numeroCuentaDestino = numeroCuentaValido(output, input);
+        String importe = recibirMensaje(input);
+        double importeDouble = Double.parseDouble(importe);
+        StringBuilder transacciones = new StringBuilder();
+        double saldoTotal = 0;
+        for (Usuario usuario : Servidor.usuarios) {
+            if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
+                CuentaBancaria cuentaBancaria = usuario.getCuentaBancaria();
+                ArrayList<Transaccion> transaccionesArrayList = cuentaBancaria.getTransacciones();
+                Transaccion transaccion = new Transaccion();
+                transaccion.setDescripcion("Transferencia a " + numeroCuentaDestino);
+                Date fecha = new Date();
+                transaccion.setFecha(fecha.toString());
+                transaccion.setImporte(importeDouble * -1);
+                transaccionesArrayList.add(transaccion);
+                for (Transaccion transaccionAux : transaccionesArrayList){
+                    transacciones.append(transaccionAux.toString() + "\n");
+                    saldoTotal += transaccionAux.getImporte();
+                }
+            }
+            if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuentaDestino)) {
+                CuentaBancaria cuentaBancaria = usuario.getCuentaBancaria();
+                ArrayList<Transaccion> transaccionesArrayList = cuentaBancaria.getTransacciones();
+                Transaccion transaccion = new Transaccion();
+                transaccion.setDescripcion("Transferencia de " + numeroCuenta);
+                Date fecha = new Date();
+                transaccion.setFecha(fecha.toString());
+                transaccion.setImporte(importeDouble);
+                transaccionesArrayList.add(transaccion);
+            }
+        }
+        StringBuilder envioMensaje = new StringBuilder();
+        envioMensaje
+                .append("Envío de transferencia correcta ✅\n")
+                .append("Tus transacciones son:\n")
+                .append(transacciones)
+                .append("\n")
+                .append("💶 Saldo total: ")
+                .append(saldoTotal);
+        enviarMensaje(output, envioMensaje.toString());
+        pantallaMenuUsuario(output, input);
+    }
 
+    private String numeroCuentaValido(ObjectOutputStream output, ObjectInputStream input){
+        boolean numeroCuentaValido = false;
+        String numeroCuenta = "";
+        do {
+            //recibir numero de cuenta
+            try {
+                numeroCuenta = recibirMensaje(input);
+            } catch (Exception e) {
+                logger.error("Error al leer el numero de cuenta del cliente" + e.getMessage());
+                throw new RuntimeException(e);
+            }
+            boolean encontrado = false;
+            for (Usuario usuario : Servidor.usuarios) {
+                if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
+                    encontrado = true;
+                    break;
+                }
+            }
+            if (encontrado) {
+                numeroCuentaValido = true;
+                enviarMensaje(output, "Numero de cuenta valido");
+            } else {
+                enviarMensaje(output, "Numero de cuenta no valido");
+            }
+        } while (!numeroCuentaValido);
+        return numeroCuenta;
     }
 
 

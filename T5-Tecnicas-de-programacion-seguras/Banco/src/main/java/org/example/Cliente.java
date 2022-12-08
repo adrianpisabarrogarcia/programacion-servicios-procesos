@@ -415,6 +415,7 @@ public class Cliente {
                     pantallaTransferencia(output, input);
                 }
                 case "3" -> {
+                    System.out.println("Cerrando conexion...");
                     try {
                         enviarMensajeCifrado(output, opcion);
                         output.close();
@@ -422,6 +423,7 @@ public class Cliente {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    System.out.println("Fin del programa");
                     System.exit(0);
                 }
                 default -> System.out.println("Opción no válida");
@@ -429,13 +431,60 @@ public class Cliente {
         }while (!opcionValida);
     }
 
-    private static void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
-
-
-
+    private static void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
+        numeroCuentaValido(output, input, "Introduzca tu número de cuenta: ");
+        //Recibir el saldo de la cuenta
+        String saldo = recibirMensajeCifrado(input);
+        System.out.println(saldo);
+        String saldoEuros = recibirMensajeCifrado(input);
+        System.out.println(saldoEuros);
+        pantallaMenuUsuario(output, input);
     }
 
-    private static void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
+    private static void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
+        numeroCuentaValido(output, input, "Introduzca tu número de cuenta: ");
+        numeroCuentaValido(output, input, "Introduzca el número de cuenta del destinatario: ");
+        //Pedir importe
+        boolean importeValido = false;
+        do{
+            String importe = "";
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Introduzca el importe de la transferencia: ");
+            importe = scanner.nextLine();
+            try {
+                Double.parseDouble(importe);
+                importeValido = true;
+                enviarMensajeCifrado(output, importe);
+            } catch (NumberFormatException e) {
+                System.out.println("El importe introducido no es válido");
+            }
+        }while (!importeValido);
+        //esperar a la respuesta del servidor de la transferencia
+        String mensajeServidor = recibirMensajeCifrado(input);
+        System.out.println(mensajeServidor);
+        pantallaMenuUsuario(output, input);
+    }
+
+    private static void numeroCuentaValido(ObjectOutputStream output, ObjectInputStream input, String mensaje){
+        boolean numCuentaValido = false;
+        do {
+            System.out.println(mensaje);
+            Scanner scanner = new Scanner(System.in);
+            String numCuenta = scanner.nextLine();
+            if (numCuenta.length() > 0) {
+                enviarMensajeCifrado(output, numCuenta);
+                String validacionNumCuenta = recibirMensajeCifrado(input);
+                System.out.println(validacionNumCuenta);
+                if (validacionNumCuenta.equals("Numero de cuenta valido")) {
+                    numCuentaValido = true;
+                } else {
+                    System.out.println("Inténtelo de nuevo");
+                }
+            } else {
+                System.out.println("Numero de cuenta no valido");
+                System.out.println("Inténtelo de nuevo");
+            }
+        } while (!numCuentaValido);
     }
 
 }

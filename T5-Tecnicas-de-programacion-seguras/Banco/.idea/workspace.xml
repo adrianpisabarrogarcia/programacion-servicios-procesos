@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅ Registro">
+    <list default="true" id="8d0fd0a9-d3c9-434f-9f8b-28b49153f413" name="Changes" comment="✅Pantalla Menú usuario">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/general.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/general.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Hilo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Transaccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Transaccion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Cliente.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Hilo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Servidor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Servidor.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +125,7 @@
       <workItem from="1670333089142" duration="56000" />
       <workItem from="1670333198678" duration="18595000" />
       <workItem from="1670525285824" duration="350000" />
-      <workItem from="1670525647013" duration="4113000" />
+      <workItem from="1670525647013" duration="8217000" />
     </task>
     <task id="LOCAL-00001" summary="Pantalla Principal ✅">
       <created>1670083642316</created>
@@ -190,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670527685376</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="✅Pantalla Menú usuario">
+      <created>1670529940135</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1670529940135</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,7 +224,8 @@
     <MESSAGE value="✅ Login" />
     <MESSAGE value="Registro" />
     <MESSAGE value="✅ Registro" />
-    <option name="LAST_COMMIT_MESSAGE" value="✅ Registro" />
+    <MESSAGE value="✅Pantalla Menú usuario" />
+    <option name="LAST_COMMIT_MESSAGE" value="✅Pantalla Menú usuario" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

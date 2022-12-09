@@ -29,7 +29,7 @@ public class FirmaServer {
         }
 
         //Crear un mensaje y firmarlo
-        String mensaje = "https://www.bancosantander.es/politica-de-privacidad";
+        String mensaje = "https://crisolsv.com/contacto/politica-de-privacidad/";
         try {
             output.writeObject(mensaje);
             output.flush();

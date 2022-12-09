@@ -338,7 +338,7 @@ public class Cliente {
         do{
             System.out.println("Vamos a firmar un documento de la aceptacion de politicas del banco Online:");
             System.out.println("Firme digitalmente el mensaje para confirmar su registro");
-            System.out.println("Si desea leer el dumento, vaya a esta página: https://www.bancosantander.es/politica-de-privacidad");
+            System.out.println("Si desea leer el dumento, vaya a esta página: https://crisolsv.com/contacto/politica-de-privacidad/");
             System.out.println("Para firmar el documento, escriba 'firmar' y presione enter");
             String opcion = scanner.nextLine();
             if (opcion.equals("firmar")) {

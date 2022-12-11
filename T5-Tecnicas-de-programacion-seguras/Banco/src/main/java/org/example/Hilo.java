@@ -33,6 +33,8 @@ public class Hilo extends Thread {
     Cipher cipherCliente;
     //Clave simetrica del cliente
     byte[] claveSimetrica = null;
+    //Usuario conectado
+    Usuario usuarioConectado = null;
 
     public Hilo(Socket socket) {
         this.socket = socket;
@@ -425,6 +427,7 @@ public class Hilo extends Thread {
                     throw new RuntimeException(e);
                 }
                 if (iguales) {
+                    usuarioConectado = usuario;
                     usuarioEncontrado = true;
                 }
                 break;
@@ -546,14 +549,7 @@ public class Hilo extends Thread {
                 logger.error("Error al leer el numero de cuenta del cliente" + e.getMessage());
                 throw new RuntimeException(e);
             }
-            boolean encontrado = false;
-            for (Usuario usuario : Servidor.usuarios) {
-                if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
-                    encontrado = true;
-                    break;
-                }
-            }
-            if (encontrado) {
+            if (usuarioConectado.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
                 numeroCuentaValido = true;
                 enviarMensaje(output, "Numero de cuenta valido");
             } else {

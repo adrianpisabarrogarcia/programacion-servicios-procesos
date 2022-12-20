@@ -140,7 +140,7 @@ public class Usuario implements Serializable {
     public boolean validarEdad(String edad) {
         //Validar que la edad sea un numero y que sea mayor a 18
         try {
-            return Integer.parseInt(edad) > 18;
+            return Integer.parseInt(edad) >= 18;
         } catch (Exception e) {
             return false;
         }

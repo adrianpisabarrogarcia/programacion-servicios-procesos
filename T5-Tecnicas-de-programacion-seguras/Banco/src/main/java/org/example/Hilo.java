@@ -474,7 +474,7 @@ public class Hilo extends Thread {
     }
 
     private void pantallaSaldo(ObjectOutputStream output, ObjectInputStream input) {
-        String numeroCuenta = numeroCuentaValido(output, input);
+        String numeroCuenta = numeroCuentaValido(output, input, "propio");
         //enviar todas las transacciones realizadas en la cuenta en forma de string
         StringBuilder transacciones = new StringBuilder();
         double saldoTotal = 0;
@@ -494,8 +494,8 @@ public class Hilo extends Thread {
     }
 
     private void pantallaTransferencia(ObjectOutputStream output, ObjectInputStream input) {
-        String numeroCuenta = numeroCuentaValido(output, input);
-        String numeroCuentaDestino = numeroCuentaValido(output, input);
+        String numeroCuenta = numeroCuentaValido(output, input,"propio");
+        String numeroCuentaDestino = numeroCuentaValido(output, input,"no propio");
         String importe = recibirMensaje(input);
         double importeDouble = Double.parseDouble(importe);
         StringBuilder transacciones = new StringBuilder();
@@ -519,7 +519,7 @@ public class Hilo extends Thread {
                 CuentaBancaria cuentaBancaria = usuario.getCuentaBancaria();
                 ArrayList<Transaccion> transaccionesArrayList = cuentaBancaria.getTransacciones();
                 Transaccion transaccion = new Transaccion();
-                transaccion.setDescripcion("Transferencia de " + numeroCuenta);
+                transaccion.setDescripcion("Transferencia de " + numeroCuenta + " a " + numeroCuentaDestino);
                 Date fecha = new Date();
                 transaccion.setFecha(fecha.toString());
                 transaccion.setImporte(importeDouble);
@@ -538,7 +538,7 @@ public class Hilo extends Thread {
         pantallaMenuUsuario(output, input);
     }
 
-    private String numeroCuentaValido(ObjectOutputStream output, ObjectInputStream input){
+    private String numeroCuentaValido(ObjectOutputStream output, ObjectInputStream input, String propio){
         boolean numeroCuentaValido = false;
         String numeroCuenta = "";
         do {
@@ -549,11 +549,25 @@ public class Hilo extends Thread {
                 logger.error("Error al leer el numero de cuenta del cliente" + e.getMessage());
                 throw new RuntimeException(e);
             }
-            if (usuarioConectado.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
-                numeroCuentaValido = true;
-                enviarMensaje(output, "Numero de cuenta valido");
-            } else {
-                enviarMensaje(output, "Numero de cuenta no valido");
+            //comprobar si el numero de cuenta es valido
+            if (propio.equals("propio")){
+                if (usuarioConectado.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
+                    numeroCuentaValido = true;
+                    enviarMensaje(output, "Numero de cuenta valido");
+                } else {
+                    enviarMensaje(output, "Numero de cuenta no valido");
+                }
+            }else{
+                for (Usuario usuario : Servidor.usuarios) {
+                    if (usuario.getCuentaBancaria().getNumeroCuenta().equals(numeroCuenta)) {
+                        numeroCuentaValido = true;
+                        enviarMensaje(output, "Numero de cuenta valido");
+                        break;
+                    }
+                }
+                if (!numeroCuentaValido){
+                    enviarMensaje(output, "Numero de cuenta no valido");
+                }
             }
         } while (!numeroCuentaValido);
         return numeroCuenta;
